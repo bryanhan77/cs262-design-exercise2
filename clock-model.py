@@ -10,7 +10,7 @@ import random
 
 # each consumer is a server
 def consumer(conn):
-    print("consumer accepted connection" + str(conn)+"\n")
+    print("[CONSUMER] new thread for client " + str(conn) + "\n")
     msg_queue=[]
     # should be different for every machine
     sleepVal = 5
@@ -25,14 +25,14 @@ def consumer(conn):
 
 # each producer is a client
 def producer(portVal):
-    host= "127.0.0.1"
-    port = int(portVal)
+    ADDR = "127.0.0.1"
+    PORT = int(portVal)
     s = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
     sleepVal = 5
     #sema acquire
     try:
-        s.connect((host,port))
-        print("Client-side connection success to port val:" + str(portVal) + "\n")
+        s.connect((ADDR, PORT))
+        print("[PRODUCER] Connected to port: " + str(PORT) + "\n")
         
         while True:
             codeVal = str(code)
@@ -47,10 +47,10 @@ def producer(portVal):
 # initialize listening server for each machine
 def init_machine(config):
     # config: [address, listening port, connected port, process id]
-    ADDR = str(config[0])
-    PORT = int(config[1])
-    print("starting server| port val:", PORT)
+    ADDR, PORT = str(config[0]), int(config[1])
+    PID = str(config[3])
 
+    print("[INIT MACHINE] Listening on port: " + str(PORT) + " for process: " + PID + "\n")
 
     server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
@@ -65,13 +65,13 @@ def init_machine(config):
 
 # individual machine process
 def machine(config, id):
-    # config: [address, port1, port2, process id]
+    # config: [address, server port, client port, process id]
     config.append(os.getpid())
 
     # randomized message
     global code
     
-    print("Config: " + str(id) + str(config))
+    print("[MACHINE] config: " + str(config) + "\n")
     
     # thread for listening
     init_thread = Thread(target=init_machine, args=(config,))
@@ -95,10 +95,12 @@ if __name__ == '__main__':
     port2 = 28001
     port3 = 38001
     
-    config1=[localHost, port1, port2,]
+    config1=[localHost, port1, port2]
     p1 = Process(target=machine, args=(config1, 1))
+
     config2=[localHost, port2, port3]
     p2 = Process(target=machine, args=(config2, 2))
+    "[]"
     config3=[localHost, port3, port1]
     p3 = Process(target=machine, args=(config3, 3))
 
