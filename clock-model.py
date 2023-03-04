@@ -49,9 +49,10 @@ def init_machine(config):
     # config: [address, listening port, connected port, process id]
     ADDR, PORT = str(config[0]), int(config[1])
     PID = str(config[3])
-
+    
     print("[INIT MACHINE] Listening on port: " + str(PORT) + " for process: " + PID + "\n")
-
+    print("clockrate: " + str(clockrate) + "\n")
+    
     server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
     server.bind((ADDR, PORT))
@@ -64,13 +65,20 @@ def init_machine(config):
  
 
 # individual machine process
-def machine(config, id):
+def machine(config):
     # config: [address, server port, client port, process id]
     config.append(os.getpid())
 
     # randomized message
     global code
+
+    # declare clockrate between 1 and 6 (actions per second)
+    global clockrate 
+    clockrate = random.randint(1,6)
+
+    # need a clockrate between 1-6 (# of instructions per second)
     
+
     print("[MACHINE] config: " + str(config) + "\n")
     
     # thread for listening
@@ -96,13 +104,13 @@ if __name__ == '__main__':
     port3 = 38001
     
     config1=[localHost, port1, port2]
-    p1 = Process(target=machine, args=(config1, 1))
+    p1 = Process(target=machine, args=(config1,))
 
     config2=[localHost, port2, port3]
-    p2 = Process(target=machine, args=(config2, 2))
+    p2 = Process(target=machine, args=(config2,))
     "[]"
     config3=[localHost, port3, port1]
-    p3 = Process(target=machine, args=(config3, 3))
+    p3 = Process(target=machine, args=(config3,))
 
     p1.start()
     p2.start()
