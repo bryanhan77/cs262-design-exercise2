@@ -75,7 +75,7 @@ def machine(config, id):
     # config: [address, server port, client port, process id]
     # need a clockrate between 1-6 (# of instructions per second)
     ThisProcess = MachineProcess(config)
-    ThisProcess.clockrate = id
+    # ThisProcess.clockrate = id
 
     print("[MACHINE] config: " + str(config) + "\n")
     
