@@ -7,6 +7,9 @@ import time
 from threading import Thread
 import random
 from collections import deque
+import csv
+from datetime import datetime
+
 
 FORMAT = 'ascii'
 BYTE_ORDER = 'big'
@@ -98,41 +101,54 @@ def machine(config, id):
 
     # machine loop to process clock cycles
     # TODO: open a file to print out all the history
+
+    filename = 'log' + str(ThisProcess.config["process_id"]) + '.csv'
+    with open(filename, 'w', newline='', encoding=FORMAT) as csvfile:
+        # receive operation, the global time (gotten from the system), the length of the message queue, and the logical clock time.
+        fieldnames = ["operation", "global_time", "length_of_queue", "logical_clock"]
+        writer = csv.writer(csvfile, delimiter='\t', quotechar='|', quoting=csv.QUOTE_MINIMAL)
+        writer.writerow(fieldnames)
+    
+
     while True:
-        
-        begin = time.process_time()
+        with open(filename, 'a', newline='', encoding=FORMAT) as csvfile:
+            begin = time.process_time()
 
-        # TODO: these happen clockrate times all in a fraction of a second
-        for _ in range(ThisProcess.clockrate):
-            code = random.randint(1,3)
-            # TODO: if message in the queue, pop from msg_queue 
-            if ThisProcess.msg_queue:
-                print(str(ThisProcess.clockrate) + ". " + str(ThisProcess.msg_queue))
-                
-                message = ThisProcess.msg_queue.popleft().split("~")
-                # update logical clock
-                ThisProcess.logical_clock = max(ThisProcess.logical_clock, int(message[0])) + 1
+            # receive operation, the global time (gotten from the system), the length of the message queue, and the logical clock time.
+            writer = csv.writer(csvfile, delimiter='\t', quotechar='|', quoting=csv.QUOTE_MINIMAL)
 
-            # TODO: if message queue is empty, generate message
-            else:
-                ThisProcess.logical_clock += 1
-                codeVal = str(ThisProcess.logical_clock) + "~" + str(code)
+            # TODO: these happen clockrate times all in a fraction of a second
+            for _ in range(ThisProcess.clockrate):
+                code = random.randint(1,3)
+                # TODO: if message in the queue, pop from msg_queue 
+                if ThisProcess.msg_queue:
+                    print(str(ThisProcess.clockrate) + ". " + str(ThisProcess.msg_queue))
+                    message = ThisProcess.msg_queue.popleft().split("~")
 
-                message_body = codeVal.encode(FORMAT)
-                message_length = len(message_body).to_bytes(1, BYTE_ORDER)
+                    # update logical clock
+                    ThisProcess.logical_clock = max(ThisProcess.logical_clock, int(message[0])) + 1
 
-                client.send(message_length + message_body)
+                    # write to file
+                    writer.writerow(['receive\t', 'time.time', str(len(ThisProcess.msg_queue)), str(ThisProcess.logical_clock)])
 
-                print(str(ThisProcess.clockrate) + ". msg sent", codeVal)
+                # TODO: if message queue is empty, generate message
+                else:
+                    ThisProcess.logical_clock += 1
+                    codeVal = str(ThisProcess.logical_clock) + "~" + str(code)
+
+                    message_body = codeVal.encode(FORMAT)
+                    message_length = len(message_body).to_bytes(1, BYTE_ORDER)
+
+                    client.send(message_length + message_body)
+
+                    print(str(ThisProcess.clockrate) + ". msg sent", codeVal)
+
+            end = time.process_time()
+            print(str(ThisProcess.clockrate) + ". Time Elapsed: " + str(end - begin) + "\n")
 
 
-        end = time.process_time()
-        print(str(ThisProcess.clockrate) + ". Time Elapsed: " + str(end - begin) + "\n")
-
-
-        # sleep for the remainder of the second
-        time.sleep(1 - (end - begin))
-        
+            # sleep for the remainder of the second
+            time.sleep(1 - (end - begin))
 
 
     

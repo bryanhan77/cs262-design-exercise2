@@ -1,0 +1,2 @@
+operation	global_time	length_of_queue	logical_clock
+|receive	|	time.time	0	4
