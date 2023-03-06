@@ -1,0 +1,27 @@
+operation	global_time	length_of_queue	logical_clock	clockrate: 1
+|send			|	time.time	|	0		|	1
+|send			|	time.time	|	0		|	2
+|receive		|	time.time	|	1		|	2
+|receive		|	time.time	|	1		|	10
+|receive		|	time.time	|	3		|	13
+|receive		|	time.time	|	5		|	19
+|receive		|	time.time	|	8		|	21
+|receive		|	time.time	|	8		|	22
+|receive		|	time.time	|	10		|	26
+|receive		|	time.time	|	10		|	29
+|receive		|	time.time	|	11		|	30
+|receive		|	time.time	|	13		|	31
+|receive		|	time.time	|	15		|	33
+|receive		|	time.time	|	15		|	34
+|receive		|	time.time	|	14		|	35
+|receive		|	time.time	|	14		|	40
+|receive		|	time.time	|	14		|	45
+|receive		|	time.time	|	15		|	47
+|receive		|	time.time	|	14		|	48
+|receive		|	time.time	|	15		|	54
+|receive		|	time.time	|	15		|	56
+|receive		|	time.time	|	15		|	59
+|receive		|	time.time	|	15		|	61
+|receive		|	time.time	|	16		|	62
+|receive		|	time.time	|	16		|	65
+|receive		|	time.time	|	16		|	68

@@ -1,0 +1,157 @@
+operation	global_time	length_of_queue	logical_clock	clockrate: 6
+|internal event	|	time.time	|	0		|	1
+|internal event	|	time.time	|	0		|	2
+|internal event	|	time.time	|	0		|	3
+|internal event	|	time.time	|	0		|	4
+|send			|	time.time	|	0		|	5
+|internal event	|	time.time	|	0		|	6
+|receive		|	time.time	|	3		|	6
+|receive		|	time.time	|	2		|	7
+|receive		|	time.time	|	1		|	8
+|send			|	time.time	|	0		|	10
+|internal event	|	time.time	|	0		|	11
+|internal event	|	time.time	|	0		|	12
+|send			|	time.time	|	0		|	13
+|internal event	|	time.time	|	0		|	14
+|internal event	|	time.time	|	0		|	15
+|internal event	|	time.time	|	0		|	16
+|internal event	|	time.time	|	0		|	17
+|internal event	|	time.time	|	0		|	18
+|send			|	time.time	|	0		|	19
+|internal event	|	time.time	|	0		|	20
+|send			|	time.time	|	0		|	21
+|send			|	time.time	|	0		|	22
+|internal event	|	time.time	|	0		|	23
+|internal event	|	time.time	|	0		|	24
+|send			|	time.time	|	0		|	25
+|send			|	time.time	|	0		|	26
+|internal event	|	time.time	|	0		|	27
+|internal event	|	time.time	|	0		|	28
+|send			|	time.time	|	0		|	29
+|send			|	time.time	|	0		|	30
+|send			|	time.time	|	0		|	31
+|internal event	|	time.time	|	0		|	32
+|send			|	time.time	|	0		|	33
+|send			|	time.time	|	0		|	34
+|send			|	time.time	|	0		|	35
+|send			|	time.time	|	0		|	36
+|receive		|	time.time	|	3		|	36
+|receive		|	time.time	|	2		|	37
+|receive		|	time.time	|	1		|	38
+|send			|	time.time	|	0		|	40
+|internal event	|	time.time	|	0		|	41
+|internal event	|	time.time	|	0		|	42
+|receive		|	time.time	|	2		|	42
+|receive		|	time.time	|	1		|	43
+|send			|	time.time	|	1		|	45
+|receive		|	time.time	|	1		|	45
+|send			|	time.time	|	0		|	47
+|send			|	time.time	|	0		|	48
+|send			|	time.time	|	0		|	49
+|send			|	time.time	|	0		|	50
+|internal event	|	time.time	|	0		|	51
+|internal event	|	time.time	|	0		|	52
+|internal event	|	time.time	|	0		|	53
+|send			|	time.time	|	0		|	54
+|internal event	|	time.time	|	0		|	55
+|send			|	time.time	|	0		|	56
+|send			|	time.time	|	0		|	57
+|internal event	|	time.time	|	0		|	58
+|send			|	time.time	|	0		|	59
+|internal event	|	time.time	|	0		|	60
+|send			|	time.time	|	0		|	61
+|send			|	time.time	|	0		|	62
+|internal event	|	time.time	|	0		|	63
+|internal event	|	time.time	|	0		|	64
+|send			|	time.time	|	1		|	65
+|receive		|	time.time	|	1		|	65
+|internal event	|	time.time	|	0		|	67
+|send			|	time.time	|	0		|	68
+|send			|	time.time	|	0		|	69
+|internal event	|	time.time	|	0		|	70
+|internal event	|	time.time	|	0		|	71
+|send			|	time.time	|	0		|	72
+|receive		|	time.time	|	1		|	72
+|send			|	time.time	|	0		|	74
+|internal event	|	time.time	|	0		|	75
+|internal event	|	time.time	|	0		|	76
+|internal event	|	time.time	|	0		|	77
+|internal event	|	time.time	|	0		|	78
+|receive		|	time.time	|	1		|	78
+|internal event	|	time.time	|	0		|	80
+|internal event	|	time.time	|	0		|	81
+|send			|	time.time	|	0		|	82
+|internal event	|	time.time	|	0		|	83
+|internal event	|	time.time	|	0		|	84
+|receive		|	time.time	|	1		|	84
+|send			|	time.time	|	0		|	86
+|send			|	time.time	|	0		|	87
+|send			|	time.time	|	0		|	88
+|internal event	|	time.time	|	0		|	89
+|send			|	time.time	|	0		|	90
+|receive		|	time.time	|	2		|	90
+|receive		|	time.time	|	1		|	91
+|internal event	|	time.time	|	0		|	93
+|internal event	|	time.time	|	0		|	94
+|internal event	|	time.time	|	0		|	95
+|send			|	time.time	|	0		|	96
+|internal event	|	time.time	|	0		|	97
+|internal event	|	time.time	|	0		|	98
+|send			|	time.time	|	0		|	99
+|send			|	time.time	|	0		|	100
+|send			|	time.time	|	0		|	101
+|internal event	|	time.time	|	0		|	102
+|receive		|	time.time	|	2		|	102
+|receive		|	time.time	|	1		|	103
+|internal event	|	time.time	|	0		|	105
+|send			|	time.time	|	0		|	106
+|internal event	|	time.time	|	0		|	107
+|send			|	time.time	|	0		|	108
+|receive		|	time.time	|	1		|	108
+|internal event	|	time.time	|	0		|	110
+|send			|	time.time	|	0		|	111
+|send			|	time.time	|	0		|	112
+|internal event	|	time.time	|	0		|	113
+|send			|	time.time	|	0		|	114
+|receive		|	time.time	|	1		|	114
+|internal event	|	time.time	|	0		|	116
+|internal event	|	time.time	|	0		|	117
+|internal event	|	time.time	|	0		|	118
+|internal event	|	time.time	|	0		|	119
+|send			|	time.time	|	0		|	120
+|receive		|	time.time	|	1		|	120
+|internal event	|	time.time	|	0		|	122
+|send			|	time.time	|	0		|	123
+|internal event	|	time.time	|	0		|	124
+|internal event	|	time.time	|	0		|	125
+|internal event	|	time.time	|	0		|	126
+|receive		|	time.time	|	1		|	126
+|internal event	|	time.time	|	0		|	128
+|internal event	|	time.time	|	0		|	129
+|internal event	|	time.time	|	0		|	130
+|send			|	time.time	|	0		|	131
+|internal event	|	time.time	|	0		|	132
+|receive		|	time.time	|	2		|	132
+|receive		|	time.time	|	1		|	133
+|internal event	|	time.time	|	0		|	135
+|send			|	time.time	|	0		|	136
+|send			|	time.time	|	0		|	137
+|send			|	time.time	|	0		|	138
+|receive		|	time.time	|	1		|	138
+|internal event	|	time.time	|	0		|	140
+|internal event	|	time.time	|	0		|	141
+|send			|	time.time	|	0		|	142
+|internal event	|	time.time	|	0		|	143
+|send			|	time.time	|	0		|	144
+|receive		|	time.time	|	1		|	144
+|send			|	time.time	|	0		|	146
+|internal event	|	time.time	|	0		|	147
+|internal event	|	time.time	|	0		|	148
+|internal event	|	time.time	|	0		|	149
+|send			|	time.time	|	0		|	150
+|receive		|	time.time	|	2		|	150
+|receive		|	time.time	|	1		|	151
+|send			|	time.time	|	0		|	153
+|send			|	time.time	|	0		|	154
+|send			|	time.time	|	0		|	155
+|internal event	|	time.time	|	0		|	156
