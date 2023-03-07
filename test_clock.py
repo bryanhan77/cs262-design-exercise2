@@ -64,7 +64,6 @@ class TestClock(TestCase):
 
         time.sleep(2)
         self.assertEqual(ThisProcess.msg_queue.popleft(), '0~msg0')
-        init_thread.terminate()
     
     def test_init_machine(self):
         localHost= "127.0.0.1"
@@ -99,7 +98,6 @@ class TestClock(TestCase):
 
         time.sleep(2)
         self.assertEqual(ThisProcess1.msg_queue.popleft(), '0~msg0')
-        init_thread1.terminate()
 
 
     def test_machine(self):
@@ -133,7 +131,6 @@ class TestClock(TestCase):
 
         time.sleep(2)
         self.assertTrue(p1)
-        p1.terminate()
 
 
 
