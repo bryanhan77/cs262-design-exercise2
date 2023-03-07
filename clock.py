@@ -63,10 +63,7 @@ def init_machine(ThisProcess):
 
     while True:
         conn, addr = server.accept()
-
         ThisProcess.server_socket = conn
-        print("!!!!! SERVER SOCKET")
-        print(ThisProcess.server_socket)
         # start consumer thread for every consumer
         start_new_thread(consumer, (conn, ThisProcess))
  
@@ -102,7 +99,11 @@ def machine(config, id):
     filename = 'log' + str(ThisProcess.config["process_id"]) + '.csv'
     with open(filename, 'w', newline='', encoding=FORMAT) as csvfile:
         # receive operation, the global time (gotten from the system), the length of the message queue, and the logical clock time.
-        fieldnames = ['operation', '\t\t\t\tglobal_time', '\t\tlength_of_queue', '\tlogical_clock', '\t\tclockrate: ' + str(ThisProcess.clockrate)]
+        fieldnames = ['operation', '\t\t\t\tglobal_time', 
+                      '\t\tlength_of_queue', '\tlogical_clock', 
+                      '\t\tclockrate: ' + str(ThisProcess.clockrate), 
+                      '\tServer port: ' + str(ThisProcess.config['server_port']), 
+                      '\tClient port: ' + str(ThisProcess.config['client_port'])]
         # writer = csv.writer(csvfile, delimiter='\t', quotechar='|', quoting=csv.QUOTE_MINIMAL)
         writer = csv.writer(csvfile, delimiter=' ', quotechar=' ', quoting=csv.QUOTE_MINIMAL)
         writer.writerow(fieldnames)
@@ -122,18 +123,18 @@ def machine(config, id):
                 ThisProcess.code = "msg" + str(random.randint(1,20))
                 # if message in the queue, pop from msg_queue 
                 if ThisProcess.msg_queue:
-                    # write to file
-                    current_time = datetime.now()
-
-                    writer.writerow(['receive\t\t', '' + str(current_time), 
-                                    '\t' + str(len(ThisProcess.msg_queue)) + '\t\t', 
-                                    str(ThisProcess.logical_clock)])
                     
                     print(str(ThisProcess.clockrate) + ". " + str(ThisProcess.msg_queue))
                     message = ThisProcess.msg_queue.popleft().split("~")
                     
                     # update logical clock
                     ThisProcess.logical_clock = max(ThisProcess.logical_clock, int(message[0])) + 1
+
+                    # write to log
+                    current_time = datetime.now()
+                    writer.writerow(['receive\t\t', '' + str(current_time), 
+                                    '\t' + str(len(ThisProcess.msg_queue)) + '\t\t', 
+                                    str(ThisProcess.logical_clock)])
 
                 # TODO: if message queue is empty, generate message
                 else:
