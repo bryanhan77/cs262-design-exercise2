@@ -34,8 +34,6 @@ class MachineProcess():
 
 # each consumer is a server: constantly listening
 def consumer(conn, ThisProcess):
-    print("[CONSUMER] new thread for client " + str(conn) + "\n")
-    time.sleep(5)
     # should be different for every machine
     while True:
         message_len = conn.recv(1)
@@ -68,6 +66,7 @@ def init_machine(ThisProcess):
         time.sleep(3)
 
         # start consumer thread for every consumer
+        print("[CONSUMER TO SERVER] Connected to port: " + str(PORT) + "\n")
         start_new_thread(consumer, (conn, ThisProcess))
  
 
@@ -77,7 +76,7 @@ def machine(config, id):
     # config: [address, server port, client port, process id]
     # need a clockrate between 1-6 (# of instructions per second)
     ThisProcess = MachineProcess(config)
-    # ThisProcess.clockrate = 6
+    ThisProcess.clockrate = 6
 
     print("[MACHINE] config: " + str(config) + "\n")
     
@@ -93,11 +92,11 @@ def machine(config, id):
 
     try:
         client.connect((ADDR, PORT))
-        time.sleep(3)
+        time.sleep(5)
         # bidirectional stream
         start_new_thread(consumer, (client, ThisProcess))
 
-        print("[PRODUCER] Connected to port: " + str(PORT) + "\n")
+        print("[SERVER TO CONSUMER] Connected to port: " + str(PORT) + "\n")
         ThisProcess.client_socket = client
 
     except socket.error as e:
