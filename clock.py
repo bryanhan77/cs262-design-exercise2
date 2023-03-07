@@ -76,7 +76,7 @@ def machine(config, id):
     # config: [address, server port, client port, process id]
     # need a clockrate between 1-6 (# of instructions per second)
     ThisProcess = MachineProcess(config)
-    ThisProcess.clockrate = 6
+    # ThisProcess.clockrate = 6
 
     print("[MACHINE] config: " + str(config) + "\n")
     
@@ -191,6 +191,7 @@ if __name__ == '__main__':
     port2 = 28001
     port3 = 38001
     
+    # 1 connects to 2 and receives from 3
     config1=[localHost, port1, port2]
     p1 = Process(target=machine, args=(config1, 1))
 
