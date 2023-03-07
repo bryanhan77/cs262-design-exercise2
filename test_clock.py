@@ -21,7 +21,6 @@ class TestClock(TestCase):
         localHost= "127.0.0.1"
         port1 = 18001
         port2 = 28001
-        port3 = 38001
         config1=[localHost, port1, port2]
         config1.append(os.getpid())
         ThisProcess = clock.MachineProcess(config1)
@@ -69,7 +68,6 @@ class TestClock(TestCase):
         localHost= "127.0.0.1"
         port1 = 18002
         port2 = 28002
-        port3 = 38002
         config1=[localHost, port1, port2]
         config1.append(os.getpid())
         ThisProcess1 = clock.MachineProcess(config1)
@@ -102,15 +100,14 @@ class TestClock(TestCase):
 
     def test_machine(self):
         localHost= "127.0.0.1"
-        port1 = 18002
-        port2 = 28002
-        port3 = 38002
+        port1 = 18003
+        port2 = 28003
         config1=[localHost, port1, port2]
 
         p1 = Process(target=clock.machine, args=(config1, 1))
 
         p1.start()
-        p1.join()
+        # p1.join()
 
         config2=[localHost, port2, port1]
         config2.append(os.getpid())
@@ -131,7 +128,6 @@ class TestClock(TestCase):
 
         time.sleep(2)
         self.assertTrue(p1)
-
 
 
 if __name__ == '__main__':
