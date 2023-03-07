@@ -65,6 +65,8 @@ def init_machine(ThisProcess):
         conn, addr = server.accept()
 
         ThisProcess.server_socket = conn
+        print("!!!!! SERVER SOCKET")
+        print(ThisProcess.server_socket)
         # start consumer thread for every consumer
         start_new_thread(consumer, (conn, ThisProcess))
  
@@ -100,8 +102,9 @@ def machine(config, id):
     filename = 'log' + str(ThisProcess.config["process_id"]) + '.csv'
     with open(filename, 'w', newline='', encoding=FORMAT) as csvfile:
         # receive operation, the global time (gotten from the system), the length of the message queue, and the logical clock time.
-        fieldnames = ['operation', 'global_time', 'length_of_queue', 'logical_clock', 'clockrate: ' + str(ThisProcess.clockrate)]
-        writer = csv.writer(csvfile, delimiter='\t', quotechar='|', quoting=csv.QUOTE_MINIMAL)
+        fieldnames = ['operation', '\t\t\t\tglobal_time', '\t\tlength_of_queue', '\tlogical_clock', '\t\tclockrate: ' + str(ThisProcess.clockrate)]
+        # writer = csv.writer(csvfile, delimiter='\t', quotechar='|', quoting=csv.QUOTE_MINIMAL)
+        writer = csv.writer(csvfile, delimiter=' ', quotechar=' ', quoting=csv.QUOTE_MINIMAL)
         writer.writerow(fieldnames)
     
     # machine loop to process clock cycles
@@ -120,7 +123,9 @@ def machine(config, id):
                 # if message in the queue, pop from msg_queue 
                 if ThisProcess.msg_queue:
                     # write to file
-                    writer.writerow(['receive\t\t', 'time.time', 
+                    current_time = datetime.now()
+
+                    writer.writerow(['receive\t\t', '' + str(current_time), 
                                     '\t' + str(len(ThisProcess.msg_queue)) + '\t\t', 
                                     str(ThisProcess.logical_clock)])
                     
@@ -138,7 +143,7 @@ def machine(config, id):
                     message_length = len(message_body).to_bytes(1, BYTE_ORDER)
 
                     # 1: send to server. 2: send to client. 3: send to both. 4-6: internal event. 
-                    operation = random.randint(1, 6)
+                    operation = random.randint(1, 10)
                     if 1 <= operation <= 3:
                         if operation == 1:
                             ThisProcess.server_socket.send(message_length + message_body)
@@ -156,7 +161,8 @@ def machine(config, id):
 
                     # 3) update log with send
                     event_type = "send\t\t\t" if operation <= 3 else "internal event\t"
-                    writer.writerow([event_type, 'time.time',
+                    current_time = datetime.now()
+                    writer.writerow([event_type, '' + str(current_time),
                                     '\t' + str(len(ThisProcess.msg_queue)) + '\t\t',
                                     str(ThisProcess.logical_clock)])
                     
