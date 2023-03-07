@@ -35,7 +35,7 @@ class MachineProcess():
 # each consumer is a server: constantly listening
 def consumer(conn, ThisProcess):
     print("[CONSUMER] new thread for client " + str(conn) + "\n")
-
+    time.sleep(5)
     # should be different for every machine
     while True:
         message_len = conn.recv(1)
@@ -63,7 +63,10 @@ def init_machine(ThisProcess):
 
     while True:
         conn, addr = server.accept()
+
         ThisProcess.server_socket = conn
+        time.sleep(3)
+
         # start consumer thread for every consumer
         start_new_thread(consumer, (conn, ThisProcess))
  
@@ -74,7 +77,7 @@ def machine(config, id):
     # config: [address, server port, client port, process id]
     # need a clockrate between 1-6 (# of instructions per second)
     ThisProcess = MachineProcess(config)
-    # ThisProcess.clockrate = id
+    # ThisProcess.clockrate = 6
 
     print("[MACHINE] config: " + str(config) + "\n")
     
@@ -90,8 +93,13 @@ def machine(config, id):
 
     try:
         client.connect((ADDR, PORT))
+        time.sleep(3)
+        # bidirectional stream
+        start_new_thread(consumer, (client, ThisProcess))
+
         print("[PRODUCER] Connected to port: " + str(PORT) + "\n")
         ThisProcess.client_socket = client
+
     except socket.error as e:
         print("Error connecting producer: %s" % e)
 
@@ -100,7 +108,7 @@ def machine(config, id):
     with open(filename, 'w', newline='', encoding=FORMAT) as csvfile:
         # receive operation, the global time (gotten from the system), the length of the message queue, and the logical clock time.
         fieldnames = ['operation', '\t\t\t\tglobal_time', 
-                      '\t\tlength_of_queue', '\tlogical_clock', 
+                      '\t\tlength_of_queue', '\tlogical_clock', '\torigin server',
                       '\t\tclockrate: ' + str(ThisProcess.clockrate), 
                       '\tServer port: ' + str(ThisProcess.config['server_port']), 
                       '\tClient port: ' + str(ThisProcess.config['client_port'])]
@@ -134,12 +142,14 @@ def machine(config, id):
                     current_time = datetime.now()
                     writer.writerow(['receive\t\t', '' + str(current_time), 
                                     '\t' + str(len(ThisProcess.msg_queue)) + '\t\t', 
-                                    str(ThisProcess.logical_clock)])
+                                    str(ThisProcess.logical_clock), 
+                                    message[1]])
 
                 # TODO: if message queue is empty, generate message
                 else:
                     # 1) send message
-                    codeVal = str(ThisProcess.logical_clock) + "~" + str(ThisProcess.code)
+                    # codeVal = str(ThisProcess.logical_clock) + "~" + str(ThisProcess.code)
+                    codeVal = str(ThisProcess.logical_clock) + "~" + str(ThisProcess.config['server_port'])
                     message_body = codeVal.encode(FORMAT)
                     message_length = len(message_body).to_bytes(1, BYTE_ORDER)
 
