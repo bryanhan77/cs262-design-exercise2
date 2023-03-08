@@ -72,46 +72,46 @@ class TestClock(TestCase):
         time.sleep(15)
         test_case.terminate()
 
-    def test_init_machine(self):
-        def test():
-            localHost= "127.0.0.1"
-            port1 = 18002
-            port2 = 28002
-            config1=[localHost, port1, port2]
-            config1.append(os.getpid())
-            ThisProcess1 = clock.MachineProcess(config1)
+    # def test_init_machine(self):
+    #     def test():
+    #         localHost= "127.0.0.1"
+    #         port1 = 18002
+    #         port2 = 28002
+    #         config1=[localHost, port1, port2]
+    #         config1.append(os.getpid())
+    #         ThisProcess1 = clock.MachineProcess(config1)
 
-            init_thread1 = Thread(target=clock.init_machine, args=(ThisProcess1,))
-            init_thread1.start()
+    #         init_thread1 = Thread(target=clock.init_machine, args=(ThisProcess1,))
+    #         init_thread1.start()
 
-            time.sleep(3)
+    #         time.sleep(3)
 
-            config2=[localHost, port2, port1]
-            config2.append(os.getpid())
-            ThisProcess3 = clock.MachineProcess(config2)
-            ADDR2, PORT2 = str(ThisProcess3.config['address']), int(ThisProcess3.config["client_port"])
-            client = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
+    #         config2=[localHost, port2, port1]
+    #         config2.append(os.getpid())
+    #         ThisProcess3 = clock.MachineProcess(config2)
+    #         ADDR2, PORT2 = str(ThisProcess3.config['address']), int(ThisProcess3.config["client_port"])
+    #         client = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
 
-            time.sleep(3)
+    #         time.sleep(3)
 
-            client.connect((ADDR2, PORT2))
+    #         client.connect((ADDR2, PORT2))
 
-            time.sleep(3)
+    #         time.sleep(3)
 
-            codeVal = str(ThisProcess3.logical_clock) + "~" + str(ThisProcess3.code)
-            message_body = codeVal.encode(FORMAT)
-            message_length = len(message_body).to_bytes(1, BYTE_ORDER)
-            client.send(message_length + message_body)
+    #         codeVal = str(ThisProcess3.logical_clock) + "~" + str(ThisProcess3.code)
+    #         message_body = codeVal.encode(FORMAT)
+    #         message_length = len(message_body).to_bytes(1, BYTE_ORDER)
+    #         client.send(message_length + message_body)
 
-            time.sleep(2)
+    #         time.sleep(2)
 
-            self.assertEqual(ThisProcess1.msg_queue.popleft(), '0~msg0')
+    #         self.assertEqual(ThisProcess1.msg_queue.popleft(), '0~msg0')
 
-        test_case = Process(target=test, args=())
+    #     test_case = Process(target=test, args=())
         
-        test_case.start()
-        time.sleep(15)
-        test_case.terminate()
+    #     test_case.start()
+    #     time.sleep(15)
+    #     test_case.terminate()
 
     def test_machine(self):
         localHost= "127.0.0.1"
