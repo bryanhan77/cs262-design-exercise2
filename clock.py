@@ -118,70 +118,77 @@ def machine(config, id):
     # machine loop to process clock cycles
     # TODO: open a file to print out all the history
     while True:
-        # append to log
-        with open(filename, 'a', newline='', encoding=FORMAT) as csvfile:
-            begin = time.process_time()
+        try: 
+            # append to log
+            with open(filename, 'a', newline='', encoding=FORMAT) as csvfile:
+                begin = time.process_time()
 
-            # receive operation, the global time (gotten from the system), the length of the message queue, and the logical clock time.
-            writer = csv.writer(csvfile, delimiter='\t', quotechar='|', quoting=csv.QUOTE_MINIMAL)
+                # receive operation, the global time (gotten from the system), the length of the message queue, and the logical clock time.
+                writer = csv.writer(csvfile, delimiter='\t', quotechar='|', quoting=csv.QUOTE_MINIMAL)
 
-            # TODO: these happen clockrate times all in a fraction of a second
-            for _ in range(ThisProcess.clockrate):
-                ThisProcess.code = "msg" + str(random.randint(1,20))
-                # if message in the queue, pop from msg_queue 
-                if ThisProcess.msg_queue:
-                    
-                    print(str(ThisProcess.clockrate) + ". " + str(ThisProcess.msg_queue))
-                    message = ThisProcess.msg_queue.popleft().split("~")
-                    
-                    # update logical clock
-                    ThisProcess.logical_clock = max(ThisProcess.logical_clock, int(message[0])) + 1
+                # TODO: these happen clockrate times all in a fraction of a second
+                for _ in range(ThisProcess.clockrate):
+                    ThisProcess.code = "msg" + str(random.randint(1,20))
+                    # if message in the queue, pop from msg_queue 
+                    if ThisProcess.msg_queue:
+                        
+                        print(str(ThisProcess.clockrate) + ". " + str(ThisProcess.msg_queue))
+                        message = ThisProcess.msg_queue.popleft().split("~")
+                        
+                        # update logical clock
+                        ThisProcess.logical_clock = max(ThisProcess.logical_clock, int(message[0])) + 1
 
-                    # write to log
-                    current_time = datetime.now()
-                    writer.writerow(['receive\t\t', '' + str(current_time), 
-                                    '\t' + str(len(ThisProcess.msg_queue)) + '\t\t', 
-                                    str(ThisProcess.logical_clock), 
-                                    message[1]])
+                        # write to log
+                        current_time = datetime.now()
+                        writer.writerow(['receive\t\t', '' + str(current_time), 
+                                        '\t' + str(len(ThisProcess.msg_queue)) + '\t\t', 
+                                        str(ThisProcess.logical_clock), 
+                                        message[1]])
 
-                # TODO: if message queue is empty, generate message
-                else:
-                    # 1) send message
-                    # codeVal = str(ThisProcess.logical_clock) + "~" + str(ThisProcess.code)
-                    codeVal = str(ThisProcess.logical_clock) + "~" + str(ThisProcess.config['server_port'])
-                    message_body = codeVal.encode(FORMAT)
-                    message_length = len(message_body).to_bytes(1, BYTE_ORDER)
-
-                    # 1: send to server. 2: send to client. 3: send to both. 4-6: internal event. 
-                    operation = random.randint(1, 5)
-                    if 1 <= operation <= 3:
-                        if operation == 1:
-                            ThisProcess.server_socket.send(message_length + message_body)
-                        elif operation == 2:
-                            ThisProcess.client_socket.send(message_length + message_body)
-                        elif operation == 3:
-                            ThisProcess.server_socket.send(message_length + message_body)
-                            ThisProcess.client_socket.send(message_length + message_body)
+                    # TODO: if message queue is empty, generate message
                     else:
-                        # internal event
-                        pass
-                    
-                    # 2) update logical clock
-                    ThisProcess.logical_clock += 1
+                        # 1) send message
+                        # codeVal = str(ThisProcess.logical_clock) + "~" + str(ThisProcess.code)
+                        codeVal = str(ThisProcess.logical_clock) + "~" + str(ThisProcess.config['server_port'])
+                        message_body = codeVal.encode(FORMAT)
+                        message_length = len(message_body).to_bytes(1, BYTE_ORDER)
 
-                    # 3) update log with send
-                    event_type = "send\t\t\t" if operation <= 3 else "internal event\t"
-                    current_time = datetime.now()
-                    writer.writerow([event_type, '' + str(current_time),
-                                    '\t' + str(len(ThisProcess.msg_queue)) + '\t\t',
-                                    str(ThisProcess.logical_clock)])
-                    
-                    print(str(ThisProcess.clockrate) + ". msg sent", codeVal)
+                        # 1: send to server. 2: send to client. 3: send to both. 4-6: internal event. 
+                        operation = random.randint(1, 5)
+                        if 1 <= operation <= 3:
+                            if operation == 1:
+                                ThisProcess.server_socket.send(message_length + message_body)
+                            elif operation == 2:
+                                ThisProcess.client_socket.send(message_length + message_body)
+                            elif operation == 3:
+                                ThisProcess.server_socket.send(message_length + message_body)
+                                ThisProcess.client_socket.send(message_length + message_body)
+                        else:
+                            # internal event
+                            pass
+                        
+                        # 2) update logical clock
+                        ThisProcess.logical_clock += 1
 
-            # sleep for the remainder of the second
-            end = time.process_time()
-            time.sleep(1 - (end - begin))
+                        # 3) update log with send
+                        event_type = "send\t\t\t" if operation <= 3 else "internal event\t"
+                        current_time = datetime.now()
+                        writer.writerow([event_type, '' + str(current_time),
+                                        '\t' + str(len(ThisProcess.msg_queue)) + '\t\t',
+                                        str(ThisProcess.logical_clock)])
+                        
+                        print(str(ThisProcess.clockrate) + ". msg sent", codeVal)
 
+                # sleep for the remainder of the second
+                end = time.process_time()
+                time.sleep(1 - (end - begin))
+                
+        except KeyboardInterrupt:
+            print("[MACHINE] Keyboard Interrupt")
+            break
+        except Exception as e:
+            print("[MACHINE] Error: " + str(e))
+            break
 
     
 if __name__ == '__main__':
