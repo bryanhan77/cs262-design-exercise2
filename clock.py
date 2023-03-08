@@ -154,7 +154,7 @@ def machine(config, id):
                         message_length = len(message_body).to_bytes(1, BYTE_ORDER)
 
                         # 1: send to server. 2: send to client. 3: send to both. 4-6: internal event. 
-                        operation = random.randint(1, 5)
+                        operation = random.randint(1, 10)
                         if 1 <= operation <= 3:
                             if operation == 1:
                                 ThisProcess.server_socket.send(message_length + message_body)
@@ -182,7 +182,7 @@ def machine(config, id):
                 # sleep for the remainder of the second
                 end = time.process_time()
                 time.sleep(1 - (end - begin))
-                
+
         except KeyboardInterrupt:
             print("[MACHINE] Keyboard Interrupt")
             break
