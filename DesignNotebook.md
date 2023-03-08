@@ -36,7 +36,7 @@ Once you have run this on three virtual machines that can vary their internal ti
 This is a very simple feedback loop to model our machine processes. Each peer-to-peer connection is bi-directional. 
 
 ### Running the scale model: 
-**Trial 1**
+### Trial 1
 
 Process 1 - Server port: 18001, Client port: 28001. Clockrate: 6. 
 
@@ -65,7 +65,7 @@ Process 3 - Server port: 38001, Client port: 18001. Clockrate: 4.
 - Because process 2 couldn't keep up with processing the messages, it only received messages throughput the process, and only sent a message to another machine process at the very beginning of the trial. 
 
 
-**Trial 2**
+### Trial 2
 
 Process 1 - Server port: 18001, Client port: 28001. Clockrate: 4.  
 
@@ -92,7 +92,7 @@ Process 3 - Server port: 38001, Client port: 18001. Clockrate: 1.
 - For process 1 (clockrate 4), the queue length is 0 for most of the time. For process 2 (clockrate 2), the queue length is 0 for most of the time, but the times that it is 1 is more. For Process 3 (clockrate 1), the queue length is 0 for half of the time, and other times it ranges from 1 to 5. 
 
 
-**Trial 3**
+### Trial 3
 
 Process 1 - Server port: 18001, Client port: 28001. Clockrate: 4.
 
@@ -123,7 +123,7 @@ Process 3 - Server port: 38001, Client port: 18001. Clockrate: 1.
 - Process 3 (clockrate = 1) lags behind process 2 (clockrate = 6) in logical clock, and as a result, process 1 (clockrate = 5), being fed by process 3 which lags behind in logical clock, is also lagging behind in logical clock despite having a high clockrate of 5. Process 3 is lagging behind because it has yet to process the messages from Process 2 stored in its queue. Process 1 lags behind in its clockrate because process 3 is busy processing its receives and haven't send a message to process 1 in ages (actually, it has never sent a message to process 1, so process 1's clockrate has been just its own incrementation this whole time). 
 
 
-**Trial 4**
+### Trial 4
 
 Process 1 - Server port: 18001, Client port: 28001. Clockrate: 5. 
 
@@ -151,7 +151,7 @@ Process 3 - Server port: 38001, Client port: 18001. Clockrate: 1.
 - Logical clock is behind for process 3 because the later messages were stored in its queue -- it didn't have time to process all of the messages and update its logical clock to the latest. 
 
 
-**Trial 5**
+### Trial 5
 
 Process 1 - Server port: 18001, Client port: 28001. Clockrate: 6. 
 
@@ -181,7 +181,7 @@ Process 3 - Server port: 38001, Client port: 18001. Clockrate: 2.
 <!-- Once you have run this on three virtual machines that can vary their internal times by an order of magnitude, try running it with a smaller variation in the clock cycles and a smaller probability of the event being internal. What differences do those variations make? Add these observations to your lab notebook. Play around, and see if you can find something interesting. -->
 
 
-**Trial 6: Testing with logical clock**
+### Trial 6: Testing with logical clock
 
 Process 1 - Server port: 18001, Client port: 28001. Clockrate: 4. 
 
@@ -197,7 +197,7 @@ Total runtime: 75 seconds.
 - Process 2, which has a clockrate of 2, ended with a queue length of 47 -- the highest queue length recorded among the trials. This is definintely caused by decreased chance of internal events. Because internal events are less likelly to happen, sends are now more common. Because sends are more common, more messages are sent from processes with higher clockrates to processes with lower clockrates, and thus there are increases to the backlogging of messages, as observed by Process's 2's long message queue by the end of the 75 second runtime. 
 
 
-**Trial 7: Testing with logical clock** 
+### Trial 7: Testing with logical clock 
 
 Process 1 - Server port: 18001, Client port: 28001. Clockrate: 1. 
 
