@@ -6,7 +6,6 @@ To view our design decisions, test trials, and observations, simply refer to Des
 
 ## Running Model on Local
 To run the model, simply download the zip file, cd into the repository, and execute: 
-Clone the repository
 ```bash
 git clone https://github.com/jared-ni/cs262-design-exercise2.git
 ```
