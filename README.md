@@ -10,11 +10,11 @@ Clone the repository
 ```bash
 git clone https://github.com/jared-ni/cs262-design-exercise2.git
 ```
-Then, cd into the repository,
+Then, cd into the repository, and execute the following in terminal: 
 ```
 python clock.py
 ```
-To run the unit tests, execute
+To run the unit tests, execute: 
 ```
 python test_clock.py
 ```
