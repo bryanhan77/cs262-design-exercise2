@@ -1,0 +1,4 @@
+operation 				global_time 		length_of_queue 	logical_clock  	origin  server   		clockrate:  5   	Server  port:  18003   	Client  port:  28003 
+|send			|	2023-03-07 23:19:19.738957	|	0		|	1
+|internal event	|	2023-03-07 23:19:19.739122	|	0		|	2
+|internal event	|	2023-03-07 23:19:19.739254	|	0		|	3
