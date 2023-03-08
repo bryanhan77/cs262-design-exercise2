@@ -9,7 +9,7 @@ To run the model, simply download the zip file, cd into the repository, and exec
 ```bash
 git clone https://github.com/jared-ni/cs262-design-exercise2.git
 ```
-Then, cd into the repository, and execute the following in terminal: 
+Then, cd into the repository, and execute the following in terminal to simulate the clocks:
 ```
 python clock.py
 ```
