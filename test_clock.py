@@ -33,7 +33,7 @@ class TestClock(TestCase):
             server.listen()
             while True:
                 conn, addr = server.accept()
-
+                time.sleep(3)
                 ThisProcess.server_socket = conn
                 print("!!!!! SERVER SOCKET")
                 print(ThisProcess.server_socket)
@@ -63,6 +63,7 @@ class TestClock(TestCase):
 
         time.sleep(2)
         self.assertEqual(ThisProcess.msg_queue.popleft(), '0~msg0')
+    
     
     def test_init_machine(self):
         localHost= "127.0.0.1"
@@ -95,6 +96,7 @@ class TestClock(TestCase):
         client.send(message_length + message_body)
 
         time.sleep(2)
+
         self.assertEqual(ThisProcess1.msg_queue.popleft(), '0~msg0')
 
 

@@ -154,3 +154,46 @@ drift in the values of logical clocks in different machines:
 impact different timings have on gaps in the logical clock values, length of the message queue. 
 - Message queue was empty for process 1 and 2 for most of the time, and process queue ranges from 1 to 11 for process 3 (clockrate 2) for most of the time. 
 - The logical clock pattern for each of the processes are to be expected. The one with the most updated logical clock was the process with the greatest clockrate (process 1, clockrate 6), and the one with the middle clockrate (process 2, clockrate 4), and the one with the least clockrate had the logical clock with the most drift from the others (process 3, clockrate 2). 
+
+
+Once you have run this on three virtual machines that can vary their internal times by an order of magnitude, try running it with a smaller variation in the clock cycles and a smaller probability of the event being internal. What differences do those variations make? Add these observations to your lab notebook. Play around, and see if you can find something interesting.
+
+
+6. Testing with logical clock 
+Process 1 - Server port: 18001, Client port: 28001. Clockrate: 4. 
+Process 2 - Server port: 28001, Client port: 38001. Clockrate: 2.  
+Process 3 - Server port: 38001, Client port: 18001. Clockrate: 5. 
+
+Chance of internal event: changed from 7/10 to 2/5. 
+Total runtime: 75 seconds. 
+
+Observations: 
+- Most things are similar, except for the fact that process 3, which has the highest clockrate, now has a higher level of drift where its logic clock is 11 more than its number of events (386 for logic clock, and 375 for number of events it had), despite having the highest clockrate among the three processes. 
+- Process 2, which has a clockrate of 2, ended with a queue length of 47 -- the highest queue length recorded among the trials. This is definintely caused by decreased chance of internal events. Because internal events are less likelly to happen, sends are now more common. Because sends are more common, more messages are sent from processes with higher clockrates to processes with lower clockrates, and thus there are increases to the backlogging of messages, as observed by Process's 2's long message queue by the end of the 75 second runtime. 
+
+
+7. Testing with logical clock 
+Process 1 - Server port: 18001, Client port: 28001. Clockrate: 1. 
+Process 2 - Server port: 28001, Client port: 38001. Clockrate: 4.  
+Process 3 - Server port: 38001, Client port: 18001. Clockrate: 2. 
+
+Chance of internal event: changed from 7/10 to 2/5. 
+Total runtime: 60 seconds. 
+
+Observations: 
+size of the jumps in logical clocks: 
+- For Process 1, the logical clock incremented in chunks, and the largest jump size was 8. 
+- For Process 2, the logical clock increamented perfectly by 1 each time, for 240 times. 
+- For Process 3, the logical clock incremented in chunks, and surprisingly it had an updated logical clock of 241 by the end. 
+
+drift in the values of logical clocks in different machines: 
+- Process 1's operation count is 60.
+- Process 2's operation count is 240.
+- Process 3's operation count is 120.
+- Process 1 ended with logical clock = 127 by time 2023-03-07 19:22:12.231913. 
+- Process 2 ended with logical clock = 240 by time 2023-03-07 19:22:12.230469. 
+- Process 3 ended with logical clock = 241 by time 2023-03-07 19:22:12.231208.
+
+Observations: 
+- Interestingly, process 3 has a more updated logical clock than process 2, even though Process 3 only has a clockrate of 2 whereas process 2 has a clockrate of 4. 
+- Similar observations to trial 6. For processes with slower clockrate (process 1), the length of the message queue increased at a much higher pace than it did when the internal event happened more frequently than it does now. 
